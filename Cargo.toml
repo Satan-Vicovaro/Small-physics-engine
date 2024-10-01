@@ -1,0 +1,12 @@
+[package]
+name = "fizyk_endzin"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sdl2 = "*"
+fontdue = "*"
+fontdue-sdl2 ="*"
+
+[features]
+unsafe_textures = ["sdl2/unsafe_textures"]
