@@ -89,6 +89,15 @@ impl Vector2D {
     pub fn lenght_of_projection(&self, projectee:Vector2D) -> f64 {
         return self.dot_product(&projectee)/self.length();
     }
+
+    pub fn projected_point(&self,anchor_point:(f64,f64), projectee:Vector2D) -> (f64,f64) {
+        let (anch_p_x,anch_p_y) = anchor_point;
+        let (proj_p_x,proj_p_y) = self
+        .unit_vector()
+        .mul_by_constant(self.lenght_of_projection(projectee))
+        .get_vector_value();
+        return (anch_p_x + proj_p_x, anch_p_y + proj_p_y); 
+    }
 }
 impl Add for Vector2D {
     type Output = Vector2D;

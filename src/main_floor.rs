@@ -13,7 +13,7 @@ pub struct MainFloor {
 impl MainFloor {
     pub fn new(delta_t:f64) -> Self {
         let mut movement = Movement::new(delta_t);
-        movement.add_angular_velocity(0.4);
+        movement.add_angular_velocity(0.0);
         return MainFloor {
             shape:Shape::create_rect((300.0,300.0),
             0.35* SCREEN_HEIGHT as f64 ,0.35 * SCREEN_WIDTH as f64, 0.0, 1.0

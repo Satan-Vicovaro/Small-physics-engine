@@ -67,10 +67,11 @@ impl GameObjectList {
         
         match CollisionHandler::is_collision(&shape_a, &shape_b) {
             Some(collision_points) => {
-                for (number,(point_x,point_y)) in collision_points.iter().enumerate(){
+                for (number,(point, vector)) in collision_points.iter().enumerate(){
                     // let text = format!("Collision at:({:.1}, {:.1}),",point_x,point_y );
                     // draw_handler.draw_text(&text, (150.0,40.0 * number as f32), canvas).unwrap();
-                    draw_handler.draw_point((*point_x,*point_y), canvas).unwrap();
+                    draw_handler.draw_point(*point, canvas).unwrap();
+                    vector.draw_vector(*point, 1.0, canvas);
                 }
                 
             },
@@ -78,10 +79,11 @@ impl GameObjectList {
         }
         match CollisionHandler::is_collision(&shape_b, &shape_a) {
             Some(collision_points) => {
-                for (number,(point_x,point_y)) in collision_points.iter().enumerate(){
+                for (number,((point_x,point_y),vector)) in collision_points.iter().enumerate(){
                     let text = format!("Collision at:({:.1}, {:.1}),",point_x,point_y );
                     draw_handler.draw_text(&text, (150.0,40.0 * number as f32), canvas).unwrap();
                     draw_handler.draw_point((*point_x,*point_y), canvas).unwrap();
+                    vector.draw_vector((*point_x,*point_y), 1.0, canvas);
                 }
                 
             },
