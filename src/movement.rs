@@ -60,4 +60,26 @@ impl Movement {
             self.linear_velocity,
         ];
     }
+    pub fn apply_force(&mut self,shape:& Shape, force:Vector2D, point:(f64,f64)) {
+        let radius_vector = Vector2D::from_points(shape.get_center_point(), point);
+
+        let angle_between_vectors = force.anlge_between_vectors(&radius_vector);
+        
+        let delta_v = force.unit_vector();
+        let value = shape
+        .get_inv_mass()*
+        radius_vector.length()*
+        angle_between_vectors.cos();
+        
+        delta_v.mul_by_constant(value);
+        //self.add_linear_velocity(delta_v); 
+
+        let delta_omega = 
+        shape.get_inv_mass() * force.length() * angle_between_vectors.sin();
+        //radius_vector.length();
+        
+
+        self.add_angular_velocity(delta_omega);
+
+    }
 }
