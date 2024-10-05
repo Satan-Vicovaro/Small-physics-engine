@@ -90,6 +90,9 @@ impl Vector2D {
         return self.dot_product(&projectee)/self.length();
     }
 
+    pub fn determinant(&self, other:&Vector2D) -> f64 {
+        return self.x * other.y - self.y * other.x;
+    }
     pub fn projected_point(&self,anchor_point:(f64,f64), projectee:Vector2D) -> (f64,f64) {
         let (anch_p_x,anch_p_y) = anchor_point;
         let (proj_p_x,proj_p_y) = self
@@ -98,6 +101,7 @@ impl Vector2D {
         .get_vector_value();
         return (anch_p_x + proj_p_x, anch_p_y + proj_p_y); 
     }
+    
 }
 impl Add for Vector2D {
     type Output = Vector2D;

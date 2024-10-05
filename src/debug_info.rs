@@ -45,6 +45,7 @@ impl DebugInfo {
         match data {
             Some((movement, shape)) => {
                 let center = shape.get_center_point();
+                self.add_element(DebugType::PointDebug { point: center });
                 for data in movement.get_debug_data() {
                     self.add_element(DebugType::VectorDebug { vector: data, start: center });
                 }

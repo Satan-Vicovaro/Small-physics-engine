@@ -86,6 +86,14 @@ fn handle_events(event_pump:&mut EventPump,key_pressed: &mut KeyPressedAndOption
             Event::KeyUp { keycode:Some(Keycode::E),.. } => {
                 key_pressed.E_down = false;
             },
+            Event::KeyDown { keycode:Some(Keycode::F4),.. } => {
+                key_pressed.previos_F4_down = key_pressed.F4_down;
+                key_pressed.F4_down = true;
+            },
+            Event::KeyUp { keycode:Some(Keycode::F4),.. } => {
+                key_pressed.previos_F4_down = key_pressed.F4_down;
+                key_pressed.F4_down = false;
+            },
             Event::KeyDown { keycode:Some(Keycode::F3),.. } => {
                 key_pressed.F3_down = true;
             },
@@ -107,6 +115,12 @@ fn handle_events(event_pump:&mut EventPump,key_pressed: &mut KeyPressedAndOption
     }
     if key_pressed.F2_down {
         key_pressed.debug_enabled = false;
+    }
+    if key_pressed.F4_down && !key_pressed.previos_F4_down {
+        key_pressed.next_frame = true;
+    }
+    else {
+        key_pressed.next_frame = false;
     }
 }
 
@@ -144,9 +158,9 @@ pub fn main() {
     //fontdue-sdl2:
     let mut font_texture = FontTexture::new(&texture_creator).unwrap();
     // fontdue:
-    let font = include_bytes!("fonts\\ComicSans.ttf") as &[u8];
+    let font = include_bytes!("fonts/ComicSans.ttf") as &[u8];
     let comic_sans = Font::from_bytes(font, fontdue::FontSettings::default()).unwrap();
-    let font = include_bytes!("fonts\\Roboto-Bold.ttf") as &[u8];
+    let font = include_bytes!("fonts/Roboto-Bold.ttf") as &[u8];
     let roboto_regular = Font::from_bytes(font, fontdue::FontSettings::default()).unwrap();
 
     let fonts = &[comic_sans,roboto_regular];
@@ -163,6 +177,18 @@ pub fn main() {
         canvas.set_draw_color(Color::RGB(255, 0, 0));
         
         handle_events(&mut event_pump,&mut keys_pressed);
+        if keys_pressed.F4_down {
+            draw_handler.draw_text("F4 down: true", (0.0,600.0), &mut canvas).unwrap();
+        }
+        else {
+            draw_handler.draw_text("F4 down: false", (0.0,600.0), &mut canvas).unwrap();
+        }
+        if keys_pressed.previos_F4_down{
+            draw_handler.draw_text("previous F4 down: true", (0.0,630.0), &mut canvas).unwrap();
+        }
+        else {
+            draw_handler.draw_text("previous F4 down: false", (0.0,630.0), &mut canvas).unwrap();
+        }
 
         if keys_pressed.quit {
             break 'running;

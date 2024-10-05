@@ -63,8 +63,9 @@ impl Movement {
     pub fn apply_force(&mut self,shape:& Shape, force:Vector2D, point:(f64,f64)) {
         let radius_vector = Vector2D::from_points(shape.get_center_point(), point);
 
-        let angle_between_vectors = force.anlge_between_vectors(&radius_vector);
+        let mut angle_between_vectors = radius_vector.anlge_between_vectors(&force);
         
+        angle_between_vectors+=3.14/4.0;
         let delta_v = force.unit_vector();
         let value = shape
         .get_inv_mass()*
@@ -74,12 +75,18 @@ impl Movement {
         delta_v.mul_by_constant(value);
         //self.add_linear_velocity(delta_v); 
 
-        let delta_omega = 
-        shape.get_inv_mass() * force.length() * angle_between_vectors.sin();
-        //radius_vector.length();
-        
+        let delta_omega = radius_vector.determinant(&force) * shape.get_inv_mass();
 
         self.add_angular_velocity(delta_omega);
+
+    }
+    pub fn apply_force_with_pivot(&mut self,shape:& Shape, force:Vector2D, point:(f64,f64),pivot:(f64,f64)) {
+        let radius_vector = Vector2D::from_points(pivot, point);
+
+        let delta_omega = radius_vector.determinant(&force) * shape.get_inv_mass();
+        //radius_vector.length();
+        self.add_angular_velocity(delta_omega);
+        todo!();
 
     }
 }

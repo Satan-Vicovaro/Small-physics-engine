@@ -4,6 +4,7 @@ use sdl2::render::Canvas;
 use crate::collision_handler::CollisionHandler;
 use crate::draw_handler::DrawHandler;
 use crate::game_time::GameTime;
+use crate::vector_2d::Vector2D;
 use crate::{draw_handler, shape, KeyPressedAndOptions};
 use crate::shape::Shape;
 use crate::movement::Movement;
@@ -22,18 +23,21 @@ impl GameObjectList {
     pub fn handle_objects(&mut self, canvas: &mut Canvas<sdl2::video::Window>,
                           keys_pressed:& KeyPressedAndOptions, time_info:& GameTime, draw_handler:&mut DrawHandler) {
         for object in self.objects.iter_mut() {
-            
-            for _ in 0..time_info.get_phisic_ticks() {
+
+            for _ in 0..time_info.get_phisic_ticks(keys_pressed) {
                 object.impl_key_movement_handler(keys_pressed);
 
                 match object.impl_movement() {
                     Some((movement, shape)) => {
+                        //movement.apply_movement(shape);
+                        
+                        movement.apply_force(shape, Vector2D::new((150.0,-100.0)), shape.get_points()[0]);
                         movement.apply_movement(shape);
                     },
                     None => {},
                 }
             }
-            
+
             if keys_pressed.debug_enabled {
                 match object.impl_debug_info() {
                     Some((debug_info,movement, shape)) => {
@@ -58,13 +62,15 @@ impl GameObjectList {
         };
         let shape_a = shape_a.clone();
         
+        DrawHandler::draw_vector(&Vector2D::new((150.0,-100.0)), shape_a.get_points()[0], 1.0, canvas);
         let b = self.objects.back_mut().unwrap();
         let shape_b = match b.impl_shape() {
             Some(shape) => {shape},
                 None => {return},
         };
         let shape_b = shape_b.clone();
-        
+        DrawHandler::draw_vector(&Vector2D::new((150.0,-100.0)), shape_b.get_points()[0], 1.0, canvas);
+
         match CollisionHandler::is_collision(&shape_a, &shape_b) {
             Some(collision_points) => {
                 for (number,(point, vector)) in collision_points.iter().enumerate(){

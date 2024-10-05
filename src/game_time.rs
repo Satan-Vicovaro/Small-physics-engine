@@ -2,6 +2,7 @@ use sdl2:: TimerSubsystem;
 use sdl2::Sdl;
 use crate::DrawHandler;
 use sdl2::render::Canvas;
+use crate::KeyPressedAndOptions;
 pub struct GameTime   {
     timer_subsystem: TimerSubsystem,
     last_frame_time:u64,
@@ -63,7 +64,15 @@ impl GameTime {
         self.frames_counter += 1;
     }
 
-    pub fn get_phisic_ticks(& self) -> u64 {
+    pub fn get_phisic_ticks(& self,keys_pressed:& KeyPressedAndOptions) -> u64 {
+        if keys_pressed.debug_enabled {
+            if keys_pressed.next_frame {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
         return self.physic_ticks;
     }
     pub fn get_timer_subsystem (& self) -> &TimerSubsystem{
