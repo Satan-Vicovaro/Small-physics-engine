@@ -41,7 +41,7 @@ impl<'a>  DrawHandler <'a> {
 
     pub fn draw_point(&mut self,position:(f64,f64) ,canvas:&mut Canvas<sdl2::video::Window>) -> Result<(), String> {
         let (pos_x,pos_y) = position ;
-        let point_points = [
+        let point_points = [ // points that belong to filled circle
             (pos_x,pos_y),
             (pos_x - 1.0 ,pos_y),
             (pos_x + 1.0,pos_y),

@@ -14,6 +14,7 @@ use std::time::Duration;
 use sdl2::rect::Rect;
 use std::cell::{RefCell, RefMut};
 use key_pressed_and_options::KeyPressedAndOptions;
+use basic_object::BasicObject;
 
 //------
 use fontdue::layout::{CoordinateSystem, Layout, TextStyle};
@@ -21,8 +22,8 @@ use fontdue::Font;
 use fontdue_sdl2::FontTexture;
 //------
 
-const SCREEN_WIDTH:u32=1200;
-const SCREEN_HEIGHT:u32=800;
+pub const SCREEN_WIDTH:u32=2400;
+pub const SCREEN_HEIGHT:u32=1600;
 
 mod shape;
 mod game_time;
@@ -35,6 +36,7 @@ mod main_floor;
 mod key_pressed_and_options;
 mod debug_info;
 mod collision_handler;
+mod basic_object;
 
 
 fn handle_events(event_pump:&mut EventPump,key_pressed: &mut KeyPressedAndOptions) {
@@ -146,11 +148,39 @@ pub fn main() {
     let mut keys_pressed= KeyPressedAndOptions::new();
 
     let player = Player::new(time_info.get_delta_t_val());
-    let main_floor= MainFloor::new(time_info.get_delta_t_val());
+    let main_floor= MainFloor::new(time_info.get_delta_t_val(),(0.0,1300.0),true);
+    let left_wall = MainFloor::new(time_info.get_delta_t_val(), (0.0,0.0),false);
+    let right_wall = MainFloor::new(time_info.get_delta_t_val(),(2300.0, 0.0), false);
+    let some_box_1 = BasicObject::new(time_info.get_delta_t_val(), (175.0,100.0));
+    let some_box_2 = BasicObject::new(time_info.get_delta_t_val(), (650.0,50.0));
+    let some_box_3 = BasicObject::new(time_info.get_delta_t_val(), (950.0,350.0));
+    let some_box_4 = BasicObject::new(time_info.get_delta_t_val(), (1250.0,150.0));
+    let some_box_5 = BasicObject::new(time_info.get_delta_t_val(), (1150.0,650.0));
+    let some_box_6 = BasicObject::new(time_info.get_delta_t_val(), (450.0,850.0));
+    let some_box_7 = BasicObject::new(time_info.get_delta_t_val(), (1650.0,650.0));
+    let some_box_8 = BasicObject::new(time_info.get_delta_t_val(), (1150.0,850.0));
+    let some_box_9 = BasicObject::new(time_info.get_delta_t_val(), (1450.0,50.0));
+    let some_box_10 = BasicObject::new(time_info.get_delta_t_val(), (1350.0,0.0));
+    let some_box_11 = BasicObject::new(time_info.get_delta_t_val(), (1450.0,650.0));
+
     let mut game_objects = GameObjectList::new();
 
-    game_objects.objects.push_back(Box::new(player));
-    game_objects.objects.push_back(Box::new(main_floor));
+    game_objects.push_object(Box::new(player));
+    game_objects.push_object(Box::new(main_floor));
+    game_objects.push_object(Box::new(some_box_1));
+    game_objects.push_object(Box::new(some_box_2));
+    game_objects.push_object(Box::new(left_wall));
+    game_objects.push_object(Box::new(right_wall));
+    game_objects.push_object(Box::new(some_box_3));
+    game_objects.push_object(Box::new(some_box_4));
+    game_objects.push_object(Box::new(some_box_5));
+    game_objects.push_object(Box::new(some_box_6));
+    game_objects.push_object(Box::new(some_box_7));
+    
+    //game_objects.push_object(Box::new(some_box_8));
+    game_objects.push_object(Box::new(some_box_9));
+    //game_objects.push_object(Box::new(some_box_10));
+    //game_objects.push_object(Box::new(some_box_11));
 
 
     //----
@@ -170,6 +200,7 @@ pub fn main() {
     //-----
     
     let mut draw_handler = DrawHandler::new(fonts, color, layout, font_texture);
+
 
     'running: loop {
         canvas.set_draw_color(Color::RGB(0, 0, 0));
@@ -196,6 +227,8 @@ pub fn main() {
         // The rest of the game loop goes here...
         game_objects.handle_objects(&mut canvas, &keys_pressed, &time_info, &mut draw_handler);
 
+
+        //game_objects.print_aabb();
         time_info.count_time();
         time_info.display_info(&mut canvas, &mut draw_handler).unwrap();
         canvas.present();

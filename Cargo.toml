@@ -7,6 +7,7 @@ edition = "2021"
 sdl2 = "*"
 fontdue = "*"
 fontdue-sdl2 ="*"
+array2d = "*"
 
 [features]
 unsafe_textures = ["sdl2/unsafe_textures"]

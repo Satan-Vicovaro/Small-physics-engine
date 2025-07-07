@@ -79,9 +79,11 @@ impl Vector2D {
             y:self.y/length
         }
     }
+    
     pub fn draw_vector(& self, start:(f64,f64),magnitude:f64,canvas: &mut Canvas<sdl2::video::Window>) {
         DrawHandler::draw_vector(self, start, magnitude, canvas)
     }
+
     pub fn area_between_vectors(vector_1:Vector2D,vector_2:Vector2D) -> f64{
         return 0.5*(vector_1.x * vector_2.y - vector_2.x - vector_1.y).abs();
     }
@@ -93,6 +95,7 @@ impl Vector2D {
     pub fn determinant(&self, other:&Vector2D) -> f64 {
         return self.x * other.y - self.y * other.x;
     }
+
     pub fn projected_point(&self,anchor_point:(f64,f64), projectee:Vector2D) -> (f64,f64) {
         let (anch_p_x,anch_p_y) = anchor_point;
         let (proj_p_x,proj_p_y) = self

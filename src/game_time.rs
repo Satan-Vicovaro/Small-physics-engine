@@ -64,15 +64,16 @@ impl GameTime {
         self.frames_counter += 1;
     }
 
+    // keys_pressed is used if you want to stop game
     pub fn get_phisic_ticks(& self,keys_pressed:& KeyPressedAndOptions) -> u64 {
-        if keys_pressed.debug_enabled {
-            if keys_pressed.next_frame {
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
+        // if keys_pressed.debug_enabled {
+        //     if keys_pressed.next_frame {
+        //         return 1;
+        //     }
+        //     else {
+        //         return 0;
+        //     }
+        // }
         return self.physic_ticks;
     }
     pub fn get_timer_subsystem (& self) -> &TimerSubsystem{

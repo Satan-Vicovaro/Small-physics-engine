@@ -4,6 +4,7 @@ use crate::{draw_handler::DrawHandler, vector_2d::Vector2D};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Shape{
+    
     poligon_points:Vec<(f64,f64)>,
     poligon_points_no_rotation:Vec<(f64,f64)>,
     angle: f64,
@@ -13,6 +14,7 @@ pub struct Shape{
 }
 
 #[allow(dead_code)]
+
 impl Shape {
     pub fn create_rect(position:(f64,f64), height:f64, width:f64, angle:f64,density:f64) -> Self {
 
@@ -36,6 +38,14 @@ impl Shape {
             inv_mass:inv_mass,
             area:area,
         }
+    }
+    
+    pub fn from_shape(&mut self, shape:& Shape) {
+        self.angle = shape.angle;
+        self.area = shape.area;
+        self.density = shape.density;
+        self.poligon_points = shape.poligon_points.clone();
+        self.poligon_points_no_rotation = shape.poligon_points_no_rotation.clone();
     }
     
     pub fn create_poligon(poligon_points:Vec<(f64,f64)>, angle:f64,density:f64) -> Shape{

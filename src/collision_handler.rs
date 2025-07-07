@@ -38,6 +38,7 @@ impl CollisionHandler {
         
     }
 
+    // check if B is in A
     pub fn is_collision(A:&Shape, B:&Shape) -> Option<Vec<((f64,f64),Vector2D)>> {
         let mut shape_vectors_A:Vec<Vector2D> = Vec::with_capacity(A.get_points().len());
 
@@ -53,10 +54,12 @@ impl CollisionHandler {
         } 
         shape_vectors_A.push(Vector2D::from_points(points_A[last_index], points_A[0])); 
 
+        
         let mut return_points:Vec<((f64,f64),Vector2D)> = Vec::with_capacity(3);
         for point_B in points_B.iter() {
             let mut allign_counter = 0;
             let mut the_closest_wall_vector:Vector2D = Vector2D::new((1000.0,1000.0));
+            
             //for every point_B we check all posible seperation axis
             for (index, point_A) in points_A.iter().enumerate() {
                 let separating_axis = shape_vectors_A[index];
@@ -84,6 +87,7 @@ impl CollisionHandler {
                 return_points.push((*point_B,the_closest_wall_vector));
             }
         }
+        
         if return_points.len() == 0 {
             return None;
         }

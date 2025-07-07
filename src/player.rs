@@ -10,7 +10,7 @@ impl Player {
     pub fn new(delta_t:f64) -> Self {
 
         return Player {
-            shape:Shape::create_rect((300.0,500.0), 150.0, 70.0, 0.0, 1.0),
+            shape:Shape::create_rect((300.0,1000.0), 150.0, 40.0, 0.0, 1.0),
             movement:Movement::new(delta_t),
             debug_info:DebugInfo::new(),
         }

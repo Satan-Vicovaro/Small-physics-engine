@@ -11,18 +11,40 @@ pub struct MainFloor {
     debug_info:DebugInfo
 }
 impl MainFloor {
-    pub fn new(delta_t:f64) -> Self {
-        let mut movement = Movement::new(delta_t);
-        movement.add_angular_velocity(0.0);
+    pub fn new(delta_t:f64, postion: (f64,f64), horizontal: bool) -> Self {
+        let mut shape = Shape::create_rect(
+            (0.0, 0.0), 0.0, 0.0, 0.0, 0.0);
+        if horizontal {
+            let mut shape_1 =Shape::create_rect(
+                postion,
+                0.05* SCREEN_HEIGHT as f64 ,
+                1.0 * SCREEN_WIDTH as f64,
+                0.0,
+                1.0);
+            shape_1.set_immovable_object();
+            shape.from_shape(&shape_1);
+        }
+        else {
+            let mut shape_1 =Shape::create_rect(
+                postion,
+                1.0 * SCREEN_WIDTH as f64,
+                0.05* SCREEN_HEIGHT as f64 ,
+                0.0,
+                1.0);
+            shape_1.set_immovable_object();
+
+            shape.from_shape(&shape_1);
+        }
+        
+        shape.set_immovable_object();
         return MainFloor {
-            shape:Shape::create_rect((300.0,300.0),
-            0.35* SCREEN_HEIGHT as f64 ,0.35 * SCREEN_WIDTH as f64, 0.0, 1.0
-                                    ),
-            movement:movement,
+            shape:shape,
+            movement:Movement::new(delta_t),
             debug_info:DebugInfo::new()
         }
     }
 }
+
 impl GameObject for MainFloor {
     fn impl_movement(&mut self) -> Option<(&mut Movement,&mut Shape)> {
         return Some((&mut self.movement, &mut self.shape));

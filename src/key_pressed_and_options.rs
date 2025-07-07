@@ -16,6 +16,7 @@ pub struct KeyPressedAndOptions {
     pub quit:bool,
     pub next_frame:bool,
 }
+
 impl KeyPressedAndOptions {
     pub fn new() -> Self {
         return KeyPressedAndOptions {
@@ -35,6 +36,7 @@ impl KeyPressedAndOptions {
             next_frame:false,
         }
     }
+    
     pub fn toggle(bool:&mut bool) {
         if *bool {
             *bool = false;
